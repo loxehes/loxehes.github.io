@@ -56,7 +56,7 @@ nav ul a{
 nav ul a:hover{color:var(--plum-deep)}
 
 /* ---------- hero ---------- */
-header{padding:110px 0 120px}
+header.wrap{padding:200px 32px 120px}
 .eyebrow{
   font-family:'IBM Plex Mono',monospace;
   font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
@@ -216,9 +216,22 @@ footer p{
 }
 
 /* responsive */
+.burger{display:none;background:none;border:none;cursor:pointer;padding:8px}
+.burger span{display:block;width:22px;height:2px;background:var(--plum-deep);margin:5px 0}
+
 @media (max-width:820px){
-  nav ul{display:none}
-  header{padding:70px 0 80px}
+  .burger{display:block}
+  nav ul{
+    display:flex;position:absolute;top:64px;left:0;right:0;
+    flex-direction:column;gap:0;
+    background:var(--bg);border-bottom:1px solid var(--line);
+    max-height:0;overflow:hidden;opacity:0;
+    transition:max-height .35s ease,opacity .3s ease;
+    pointer-events:none;
+  }
+  nav ul.open{max-height:320px;opacity:1;pointer-events:auto}
+  nav ul a{display:block;padding:16px 32px;font-size:1rem}
+  header.wrap{padding:130px 32px 80px}
   section{padding:72px 0}
   .about-grid{grid-template-columns:1fr;gap:48px}
   .facts{border-left:none;padding-left:0;border-top:1px solid var(--line);padding-top:36px}
@@ -232,6 +245,9 @@ footer p{
 <nav>
   <div class="wrap">
     <a href="#" class="brand">ARMARIC<span> // </span>MYSCILE</a>
+    <button class="burger" aria-label="Menu" onclick="document.querySelector('nav ul').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
     <ul>
       <li><a href="#apropos">À propos</a></li>
       <li><a href="#competences">Compétences</a></li>
@@ -401,6 +417,7 @@ const io = new IntersectionObserver(entries=>{
   entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
 },{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+document.querySelectorAll('nav ul a').forEach(a=>a.addEventListener('click',()=>document.querySelector('nav ul').classList.remove('open')));
 </script>
 
 </body>
